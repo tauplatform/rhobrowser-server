@@ -1,74 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Javascript Application loaded from local server</title>
-    <meta name="viewport" content="initial-scale=1.0, width=device-width"/>
+    <title>RhoBrowser</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
 
+    <link rel="stylesheet" href="/bootstrap-3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
 
-  <link rel="stylesheet" href="css/normalize.css">
-  <link rel="stylesheet" href="css/skeleton.css">
-  <link rel="stylesheet" href="css/custom.css">
+    <script src="/jquery/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="/bootstrap-3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
 
-
-
-    <script type="text/javascript" src="/jquery/jquery-1.6.4.min.js"></script>
-    <script type="text/javascript" src="/jquery/jquery.json-2.3.min.js"></script>    
-    <script type="text/javascript" src="/api/rhoapi-modules.js"></script>
-    
-    <script type="text/javascript"> 
-       function barcodeTest() {
-            var objs = Rho.Barcode.enumerate();
-            if ( objs != null )
-            {
-                alert( objs.toString() );
-             }else
-             {
-                alert('FAILED!')
-             }
-                
-        }
-    </script>
-    
+    <script src="/api/rhoapi-modules.js" type="text/javascript"></script>
 </head>
+
 <body>
-<h1>Javascript Application loaded from filesystem</h1>
 
-<div class="section">
-<div class="container">
-
-<div class="row">
-  <a href="http://www.google.com">google</a>
+<div class="container-fluid">
+    <h4>RhoBrowser</h4>
+    <a href="barcode.html" class="btn btn-primary btn-block">Barcode Scanners tests</a>
+    <a href="#" style="margin-top:150px" onclick="Rho.Application.quit();" class="btn btn-danger btn-block">Quit</a>
 </div>
 
-<div class="row">
-  <a href="#" onclick="alert( Rho.System.platform );">Show Platform</a>
 </div>
-
-<div class="row">
-  <a href="#" onclick="barcodeTest();">Barcode enumerate</a><br/>
-</div>
-
-<div class="row">
-  <a href="#" onclick="window.location='/barcode.html';">Barcode test</a>
-</div>
-
-<div class="row">
-  <a href="#" onclick="window.location='/enterprise_barcode.html';">Enterprise Barcode test</a>
-</div>
-
-
-<div class="row">
-  <a href="#" onclick="Rho.WebView.refresh();">Refresh</a>
-</div>
-
-<div class="row">
-  <a href="#" onclick="Rho.Application.quit();">Exit</a>
-</div>
-
-
-</div>
-</div>
-
 </body>
 </html>
 
