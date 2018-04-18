@@ -1,0 +1,63 @@
+<html>
+
+<head>
+
+  <script type="text/javascript" charset="utf-8" src="/js/live.js"></script>
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/skeleton.css">
+  <link rel="stylesheet" href="css/custom.css">
+
+
+  <script type="text/javascript" charset="utf-8" src="api/rhoapi-modules.js"></script>
+
+  <script type="text/javascript">
+    function scan_using_default_scanner(){
+      //Scan with default options
+      Rho.Barcode.take({}, scan_received);
+    }
+
+    function scan_received(params){
+      // Did we actually find a barcode ?
+      // If status is not 'ok', the scan was canceled
+
+        if (params["status"]=="ok") {
+          alert('Barcode scanning complete. Scanned barcode: '+params["barcode"]);
+        } else {
+          alert('Barcode scanning aborted');
+        }
+      Rho.Barcode.stop();
+    }
+
+    function enumerate_scanners() {
+      scanners = Rho.Barcode.enumerate();
+      alert(JSON.stringify(scanners, null, 4));
+    }
+
+  </script>
+
+
+</head>
+
+<body>
+
+<div class="section">
+<div class="container">
+
+
+  <div>BARCODE SCAN BODY</div>
+
+  <div>
+    <input type="button" onclick="scan_using_default_scanner();" value="SCAN"/>
+  </>
+
+  <div>
+    <input type="button" onclick="enumerate_scanners();" value="ENUM"/>
+  </>
+
+
+</div>
+</div>
+
+</body>
+</html>
