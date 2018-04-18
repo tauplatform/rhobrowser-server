@@ -2,6 +2,7 @@
 
 
 require 'webrick'
+require 'fileutils'
 require 'socket'
 require 'openssl'
 require 'net/http'
@@ -32,7 +33,19 @@ securePort = 8082
 securePortWithClientAuth = 8083
 webSocketPort = 8084
 
+codesfile = File.join( './Documents', 'codes.txt' )
+FileUtils.touch( codesfile )
+
 $local_server = WEBrick::HTTPServer.new :Port => port, :DocumentRoot => "Documents"
+
+$local_server.mount_proc '/clear_codes' do |req,res|
+  File.open(codesfile, 'w') {|file| file.truncate(0) }
+end
+
+$local_server.mount_proc '/add_code' do |req,res|
+  code = req.query['code']
+  File.open(codesfile, 'a') {|file| file.puts(code) }
+end
 
 t1 = Thread.new do
     puts "Starting local server on #{host}:#{port}"
