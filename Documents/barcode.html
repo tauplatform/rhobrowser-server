@@ -39,7 +39,7 @@
             .removeClass("hidden")
             .append("<div><pre><small>" + JSON.stringify(params) + "</small></pre></div>");
 
-        $.post("add_code", {code: '1234567890'})
+        $.post("add_code", {code: params.data})
             .done(function () {
                 alert("Data uploaded");
             });
