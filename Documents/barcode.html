@@ -66,7 +66,7 @@
             var item = $("<li class='list-group-item'></li>");
             item.append("<strong>" + scanner.scannerType + "/" + scanner.friendlyName + "</strong>");
 
-            var selectButton = $("<span class='pull-right'><button type='button' class='btn btn-default btn-xs' data-role='scanner-select' data-scannerIndex='" + i + "'>Enable</button></span>");
+            var selectButton = $("<span class='pull-right'><button type='button' class='btn btn-default btn-xs' data-role='scanner-select' data-scannerIndex='" + i + "'>Select</button></span>");
             item.append(selectButton);
 
             $("#scanners").append(item);
@@ -75,12 +75,21 @@
 
         $("[data-role=scanner-select]").on("click", function () {
             $(".list-group-item").removeClass("active");
+            $("[data-role=scanner-select]").removeClass("btn-success");
+            $("[data-role=scanner-select]").addClass("btn-primary");
+
             $(this).parent().parent().addClass("active");
+
+
+
 
             var scanners = Rho.Barcode.enumerate();
             for (var i = 0; i < scanners.length; i++) {
                 scanners[i].disable();
             }
+            $(this).addClass("btn-default");
+            $(this).addClass("btn-success");
+            $(this).text("Selected");
 
             var idx = parseInt($(this).attr("data-scannerIndex"));
             console.log("enabling scannerIndex", idx);
