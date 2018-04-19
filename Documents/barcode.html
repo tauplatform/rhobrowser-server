@@ -33,23 +33,16 @@
 <script type="text/javascript">
 
     function scanReceived(params) {
-        if (params["status"] == "ok") {
-            $("#alert").addClass("hidden");
-            $("#result")
-                .removeClass("hidden")
-                .append("<div><pre><small>" + JSON.stringify(params) + "</small></pre></div>");
 
-            $.post("add_code", {code: '1234567890'})
-                .done(function () {
-                    alert("Data uploaded");
-                });
-        }
-        else {
-            $("#alert")
-                .text("Barcode scanning aborted")
-                .removeClass("hidden");
-        }
+        $("#alert").addClass("hidden");
+        $("#result")
+            .removeClass("hidden")
+            .append("<div><pre><small>" + JSON.stringify(params) + "</small></pre></div>");
 
+        $.post("add_code", {code: '1234567890'})
+            .done(function () {
+                alert("Data uploaded");
+            });
     }
 
     function enumScanners() {
