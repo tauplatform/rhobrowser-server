@@ -33,27 +33,23 @@
 <script type="text/javascript">
 
     function scanReceived(params) {
-        // Did we actually find a barcode ?
-        // If status is not 'ok', the scan was canceled
-
-        $("#result")
+        if (params["status"] == "ok") {
+            $("#alert").addClass("hidden");
+            $("#result")
                 .removeClass("hidden")
                 .append("<div><pre><small>" + JSON.stringify(params) + "</small></pre></div>");
 
-        $.post( "http://192.168.1.49:8081/add_code", {code: '1234567890'})
-            .done(function() {
-                alert( "Data uploaded");
-            });
+            $.post("add_code", {code: '1234567890'})
+                .done(function () {
+                    alert("Data uploaded");
+                });
+        }
+        else {
+            $("#alert")
+                .text("Barcode scanning aborted")
+                .removeClass("hidden");
+        }
 
-        /*
-
-         if (params["status"]=="ok") {
-         alert('Barcode scanning complete. Scanned barcode: '+params["barcode"]);
-         } else {
-         alert('Barcode scanning aborted');
-         }
-         */
-//      Rho.Barcode.stop();
     }
 
     function enumScanners() {
@@ -64,8 +60,8 @@
 
         if ((scanners == null) || (scanners.length === 0)) {
             $("#alert")
-                    .text("No scanners available")
-                    .removeClass("hidden");
+                .text("No scanners available")
+                .removeClass("hidden");
             return;
         }
 
