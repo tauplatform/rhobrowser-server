@@ -28,7 +28,7 @@ end
 
 host = ARGV && ARGV[0] ? ARGV[0] : localip
 hosts = public_ipv4.push(host).uniq
-port = ENV['PORT']
+port = ENV['PORT'] || 8081
 securePort = 8082
 securePortWithClientAuth = 8083
 webSocketPort = 8084
