@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>RhoBrowser</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+
+    <link rel="stylesheet" href="/bootstrap-3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/jquery/jquery-3.1.1.min.js" type="text/javascript"></script>
+    <script src="/bootstrap-3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <script src="/api/rhoapi-modules.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div class="container-fluid">
+    <h4>Camera</h4>
+
+    <div id="alert" class="alert alert-warning hidden" role="alert"></div>
+
+    <div id="devices" class="list-group"></div>
+
+    <button id="enumerate" type="button" class="btn btn-block btn-primary" onclick="enumCameras();">Enumerate</button>
+
+    <button type="button" class="btn btn-block btn-success" data-role="take-picture" data-camera-index="">Take Picture
+    </button>
+    <br/>
+    <img id="result" style="width: 100%" src=""/>
+</div>
+
+<script type="text/javascript">
+
+    function takingPictureCallback(params) {
+        console.log("params", params);
+        if (params.status == 'cancel') {
+            $("#result").attr("src", "");
+            return
+        }
+
+        $("#alert").addClass("hidden");
+
+        var imageUri = Rho.Application.expandDatabaseBlobFilePath(Rho.Application.relativeDatabaseBlobFilePath(params.imageUri));
+
+        var src = "http://localhost:" + Rho.System.localServerPort + imageUri;
+
+        $("#result").removeClass("hidden");
+        $("#result").attr("src", src);
+
+    }
+
+    function enumCameras() {
+        $("#devices").empty();
+        $("#alert").addClass("hidden").empty();
+
+        var devices = Rho.Camera.enumerate();
+
+        if ((devices == null) || (devices.length === 0)) {
+            $("#alert")
+                .text("No cameras available")
+                .removeClass("hidden");
+            return;
+        }
+
+        $("#enumerate").addClass("hidden");
+
+        for (var i = 0; i < devices.length; i++) {
+            var device = devices[i];
+
+            var item = $("<li class='list-group-item'></li>");
+            item.append("<strong>" + device.cameraType + "</strong>");
+
+            var selectButton = $("<span class='pull-right'><button type='button' class='btn btn-default btn-xs' data-role='device-select' data-camera-index='" + device.cameraType + "'>Select</button></span>");
+            item.append(selectButton);
+
+            $("#devices").append(item);
+
+        }
+
+        $("[data-role=device-select]").on("click", function () {
+            $(".list-group-item").removeClass("active");
+            $("[data-role=device-select]").removeClass("btn-success");
+            $("[data-role=device-select]").addClass("btn-primary");
+
+            $(this).parent().parent().addClass("active");
+
+            // var devices = Rho.Camera.enumerate();
+            // for (var i = 0; i < devices.length; i++) {
+            //     devices[i].disable();
+            // }
+            $(this).addClass("btn-default");
+            $(this).addClass("btn-success");
+            $(this).text("Selected");
+
+
+            var idx = $(this).attr("data-camera-index");
+            console.log("device selected", idx);
+            $("[data-role=take-picture]").attr("data-camera-index", idx);
+        });
+
+        $("[data-role=take-picture]").on("click", function (e) {
+            console.log("$(this)", $(this));
+             var idx = $(this).attr("data-camera-index");
+            // console.log("taking picture", idx);
+            // var cameras = Rho.Camera.enumerate();
+            // var camera = cameras[idx];
+            //
+
+            var camera = Rho.Camera.getCameraByType(idx);
+            camera.takePicture({}, takingPictureCallback);
+            $("#result").empty().addClass("hidden");
+        });
+    }
+
+</script>
+
+</body>
+
+</html>
