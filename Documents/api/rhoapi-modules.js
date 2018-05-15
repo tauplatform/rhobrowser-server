@@ -2,6 +2,10 @@
 // Module jquery-2.0.2-rho-custom.min
 
 // Module rhoapi
+var Rho = null;
+if (Rho != null) {
+    return;
+}
 
 var Rho = Rho || (function ($) {
     'use strict';
